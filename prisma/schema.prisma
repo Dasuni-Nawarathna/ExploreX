@@ -1,0 +1,348 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  MANAGER
+  CONTENT_EDITOR
+  SUPPORT_AGENT
+  CUSTOMER
+}
+
+enum EnquiryStatus {
+  NEW
+  CONTACTED
+  CONFIRMED
+  CANCELLED
+}
+
+model User {
+  id                    String      @id @default(uuid())
+  email                 String      @unique
+  name                  String
+  passwordHash          String
+  role                  Role        @default(CUSTOMER)
+  emailVerified         Boolean     @default(false)
+  
+  // 2FA TOTP security fields
+  twoFactorSecret       String?
+  isTwoFactorEnabled    Boolean     @default(false)
+  recoveryCodesJson     String?     // Backup codes array
+  
+  // Account lockout protection
+  failedLoginAttempts   Int         @default(0)
+  lockoutUntil          DateTime?
+  
+  // Password reset tokens
+  passwordResetToken    String?
+  passwordResetExpires  DateTime?
+
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  enquiries             Enquiry[]
+  reviews               Review[]
+  auditLogs             AuditLog[]
+  wishlists             Wishlist[]
+
+  @@map("users")
+}
+
+model Destination {
+  id                  String      @id @default(uuid())
+  slug                String      @unique
+  name                String
+  subtitle            String
+  region              String
+  categories          String[]
+  bestSeason          String
+  latitude            Float
+  longitude           Float
+  heroImage           String
+  gallery             String[]
+  tag                 String
+  summary             String
+  fullDescription     String
+  highlights          String[]
+  bestTimeToVisit     String
+  weatherTips         String
+  nearbyAttractions   String[]
+  published           Boolean     @default(true)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  hotels              Hotel[]
+
+  @@map("destinations")
+}
+
+model Hotel {
+  id                  String      @id @default(uuid())
+  slug                String      @unique
+  name                String
+  refCode             String      @unique
+  destinationId       String
+  destinationName     String
+  type                String
+  starRating          Int         @default(4)
+  pricePerNightUSD    Float
+  priceRange          String
+  latitude            Float
+  longitude           Float
+  heroImage           String
+  gallery             String[]
+  amenities           String[]
+  description         String
+  address             String
+  featured            Boolean     @default(false)
+  published           Boolean     @default(true)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  destination         Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  rooms               HotelRoom[]
+  packageHotels       PackageHotel[]
+
+  @@map("hotels")
+}
+
+model HotelRoom {
+  id                  String      @id @default(uuid())
+  hotelId             String
+  name                String
+  description         String
+  priceUSD            Float
+  capacity            Int         @default(2)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  hotel               Hotel       @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@map("hotel_rooms")
+}
+
+model Package {
+  id                  String      @id @default(uuid())
+  slug                String      @unique
+  name                String
+  refCode             String      @unique
+  tagline             String
+  durationDays        Int
+  durationNights      Int
+  durationText        String
+  startingPriceUSD    Float
+  difficulty          String      @default("Easy")
+  groupSize           String      @default("Private Tour")
+  tags                String[]
+  heroImage           String
+  gallery             String[]
+  overview            String
+  routeJson           String      // JSON encoded [{name, lat, lng}]
+  inclusions          String[]
+  exclusions          String[]
+  recommendedVehicles String[]
+  featured            Boolean     @default(false)
+  published           Boolean     @default(true)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  days                PackageDay[]
+  hotels              PackageHotel[]
+
+  @@map("packages")
+}
+
+model PackageDay {
+  id                  String      @id @default(uuid())
+  packageId           String
+  dayNumber           Int
+  title               String
+  destination         String
+  description         String
+  activities          String[]
+  meals               String
+  overnightStay       String
+
+  package             Package     @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@map("package_days")
+}
+
+model PackageHotel {
+  id                  String      @id @default(uuid())
+  packageId           String
+  hotelId             String
+  tier                String      // e.g. "Luxury 5★", "Superior 4★"
+
+  package             Package     @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  hotel               Hotel       @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@map("package_hotels")
+}
+
+model Vehicle {
+  id                  String      @id @default(uuid())
+  slug                String      @unique
+  name                String
+  model               String
+  category            String
+  passengerCapacity   Int
+  luggageCapacity     Int
+  airConditioned      Boolean     @default(true)
+  image               String
+  description         String
+  features            String[]
+  pricePerDayUSD      Float
+  pricePerKmUSD       Float
+  guideOptionSurchargeUSD Float
+  idealFor            String
+  available           Boolean     @default(true)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  @@map("vehicles")
+}
+
+model GuideOption {
+  id                  String      @id @default(uuid())
+  language            String      // e.g. "English", "German", "French"
+  dailySurchargeUSD   Float
+  description         String
+  available           Boolean     @default(true)
+
+  @@map("guide_options")
+}
+
+model Enquiry {
+  id                  String          @id @default(uuid())
+  refCode             String?
+  itemType            String          // "package" | "hotel" | "vehicle" | "custom_trip" | "general"
+  itemId              String?
+  itemName            String
+  travelDate          String?
+  checkInDate         String?
+  checkOutDate        String?
+  travelersCount      Int             @default(2)
+  roomsCount          Int?
+  vehicleType         String?
+  guideOption         String?
+  hotelSelection      String?
+  customerName        String
+  customerContact     String
+  notes               String?
+  status              EnquiryStatus   @default(NEW)
+  adminNotes          String?
+  consentGiven        Boolean         @default(true)
+  customMessage       String?
+  customDetailsJson   String?
+
+  userId              String?
+  user                User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+
+  @@map("enquiries")
+}
+
+model Review {
+  id                  String      @id @default(uuid())
+  targetType          String      // "package" | "hotel" | "general"
+  targetId            String?
+  customerName        String
+  customerLocation    String?
+  rating              Int         @default(5)
+  comment             String
+  isApproved          Boolean     @default(false)
+
+  userId              String?
+  user                User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  @@map("reviews")
+}
+
+model BlogPost {
+  id                  String      @id @default(uuid())
+  slug                String      @unique
+  title               String
+  summary             String
+  content             String
+  category            String
+  readTime            String
+  image               String
+  author              String
+  published           Boolean     @default(true)
+  publishedDate       String
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  @@map("blog_posts")
+}
+
+model FAQ {
+  id                  String      @id @default(uuid())
+  question            String
+  answer              String
+  category            String      @default("General")
+  sortOrder           Int         @default(0)
+  published           Boolean     @default(true)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  @@map("faqs")
+}
+
+model SiteSetting {
+  id                    String    @id @default("default")
+  agencyName            String    @default("ExploreX")
+  tagline               String    @default("Travel Agency")
+  agencyPhone           String    @default("+94 11 234 5678")
+  agencyWhatsAppNumber  String    @default("94771234567")
+  agencyEmail           String    @default("hello@explorex.lk")
+  colomboOfficeAddress  String    @default("No. 42, Galle Face Promenade, Colombo 03, Sri Lanka")
+  kandyOfficeAddress    String    @default("No. 18, Temple Square, Kandy 20000, Sri Lanka")
+  operatingHours        String    @default("Daily: 08:00 AM - 10:00 PM IST (24/7 WhatsApp On-Tour Support)")
+  updatedAt             DateTime  @updatedAt
+
+  @@map("settings")
+}
+
+model AuditLog {
+  id                  String      @id @default(uuid())
+  userId              String?
+  userEmail           String?
+  action              String      // "CREATE", "UPDATE", "DELETE", "LOGIN", "LOCKOUT", "STATUS_CHANGE"
+  resource            String      // "package", "hotel", "enquiry", "user", "settings"
+  resourceId          String?
+  details             String?     // Summarized description of changes
+  ipAddress           String?
+  userAgent           String?
+  createdAt           DateTime    @default(now())
+
+  user                User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
+
+model Wishlist {
+  id                  String      @id @default(uuid())
+  userId              String
+  itemType            String      // "package" | "hotel"
+  itemId              String
+  createdAt           DateTime    @default(now())
+
+  user                User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, itemType, itemId])
+  @@map("wishlists")
+}
+
