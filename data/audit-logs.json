@@ -1,0 +1,62 @@
+[
+  {
+    "id": "aud-1793913553900-455",
+    "timestamp": "2026-11-05T21:19:13.900Z",
+    "userId": "usr-1793903938865-457",
+    "userEmail": "kyle@clothing.com",
+    "action": "LOGOUT",
+    "resource": "auth",
+    "resourceId": "",
+    "details": "User logged out cleanly",
+    "ipAddress": "127.0.0.1",
+    "userAgent": "Internal Agent"
+  },
+  {
+    "id": "aud-1793903938889-770",
+    "timestamp": "2026-11-05T18:38:58.889Z",
+    "userId": "usr-1793903938865-457",
+    "userEmail": "kyle@clothing.com",
+    "action": "REGISTER",
+    "resource": "user",
+    "resourceId": "usr-1793903938865-457",
+    "details": "Customer registered new account",
+    "ipAddress": "::1",
+    "userAgent": "Internal Agent"
+  },
+  {
+    "id": "aud-001",
+    "userId": "usr-super-admin",
+    "userEmail": "admin@explorex.lk",
+    "action": "LOGIN",
+    "resource": "auth",
+    "resourceId": "usr-super-admin",
+    "details": "Successful administrative login with IP verification",
+    "ipAddress": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    "timestamp": "2026-11-04T08:30:00Z"
+  },
+  {
+    "id": "aud-002",
+    "userId": "usr-manager",
+    "userEmail": "manager@explorex.lk",
+    "action": "UPDATE",
+    "resource": "package",
+    "resourceId": "pkg-cultural-triangle",
+    "details": "Updated seasonal hotel tiers for Cultural Triangle tour",
+    "ipAddress": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    "timestamp": "2026-11-04T10:15:00Z"
+  },
+  {
+    "id": "aud-003",
+    "userId": "usr-super-admin",
+    "userEmail": "admin@explorex.lk",
+    "action": "STATUS_CHANGE",
+    "resource": "enquiry",
+    "resourceId": "ENQ-1730000000-001",
+    "details": "Changed status from NEW to CONTACTED via WhatsApp concierge",
+    "ipAddress": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    "timestamp": "2026-11-04T14:20:00Z"
+  }
+]

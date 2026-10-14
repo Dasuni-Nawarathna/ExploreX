@@ -1,0 +1,110 @@
+[
+  {
+    "itemType": "custom_trip",
+    "itemName": "Bespoke Sri Lanka Tour (5 Days)",
+    "refCode": "CUST-TRIP",
+    "travelDate": "2026-12-06",
+    "travelersCount": 2,
+    "vehicleType": "Luxury Sedan Car (Car)",
+    "guideOption": "With Chauffeur + Licensed English-Speaking Guide",
+    "customDetails": {
+      "destinations": [
+        "Galle",
+        "Galle Fort",
+        "Mirissa"
+      ],
+      "days": 5,
+      "tier": "Superior 4★",
+      "estimatedPriceUSD": 1390
+    },
+    "customerName": "nichole",
+    "customerContact": "",
+    "notes": "",
+    "consentGiven": true,
+    "customMessage": "Hello ExploreX! I built a custom Sri Lanka trip on your website:\n\n• Destinations: Galle, Galle Fort, Mirissa\n• Duration: 5 Days\n• Travelers: 2 guest(s)\n• Accommodation Tier: Superior 4★\n• Vehicle: Luxury Sedan Car (Car)\n• Guide: With Chauffeur + Licensed English-Speaking Guide\n• Estimated Quote: LKR 423,950\n• Start Date: 2026-12-06\n\nPlease review my custom selection and share a formal itinerary. (Ref: EXPLOREX-CUSTOM)",
+    "id": "ENQ-1793896374920-971",
+    "timestamp": "2026-11-05T16:32:54.920Z",
+    "status": "new"
+  },
+  {
+    "itemType": "package",
+    "itemId": "pkg-cultural-triangle",
+    "itemName": "7-Day Cultural Triangle & Hill Country Classic",
+    "refCode": "PKG-001",
+    "travelDate": "2026-12-15",
+    "travelersCount": 3,
+    "vehicleType": "High-Roof Luxury Van (Toyota KDH)",
+    "guideOption": "With Licensed English-Speaking National Guide",
+    "customerName": "Priya Sharma",
+    "customerContact": "+91 98765 43210 (priya@example.com)",
+    "notes": "Need vegetarian Sri Lankan meals and wheelchair assistance for 1 senior guest.",
+    "consentGiven": true,
+    "id": "ENQ-1793873646397-579",
+    "timestamp": "2026-11-05T10:14:06.397Z",
+    "status": "new"
+  },
+  {
+    "id": "ENQ-1730800000001",
+    "timestamp": "2026-11-04T10:15:00.000Z",
+    "status": "contacted",
+    "itemType": "package",
+    "itemId": "pkg-island-odyssey",
+    "itemName": "10-Day Island Odyssey: Wildlife, Tea Hills & Golden Beaches",
+    "refCode": "PKG-002",
+    "travelDate": "2026-12-10",
+    "travelersCount": 2,
+    "vehicleType": "High-Roof Luxury Van (Toyota KDH)",
+    "guideOption": "With Licensed English-Speaking National Guide",
+    "customerName": "Edward & Sophie Turner",
+    "customerContact": "+44 7911 123456 (sophie.turner@example.co.uk)",
+    "notes": "Requesting 2nd class train seats from Kandy to Ella and double bed room in 98 Acres.",
+    "consentGiven": true
+  },
+  {
+    "id": "ENQ-1730800000002",
+    "timestamp": "2026-11-04T14:40:00.000Z",
+    "status": "new",
+    "itemType": "custom_trip",
+    "itemName": "Bespoke Sri Lanka Tour (8 Days)",
+    "refCode": "CUST-TRIP",
+    "travelDate": "2026-11-20",
+    "travelersCount": 4,
+    "vehicleType": "High-Roof Luxury Van (Toyota KDH)",
+    "guideOption": "Chauffeur + German Speaking Guide",
+    "customerName": "Klaus Richter",
+    "customerContact": "+49 170 9876543 (klaus.richter@web.de)",
+    "notes": "Family trip with two teenagers. Interested in Yala safari and Galle Fort cycling.",
+    "consentGiven": true,
+    "customDetails": {
+      "destinations": [
+        "Sigiriya",
+        "Kandy",
+        "Ella",
+        "Yala",
+        "Galle"
+      ],
+      "days": 8,
+      "tier": "Superior 4★",
+      "estimatedPriceUSD": 2340
+    }
+  },
+  {
+    "id": "ENQ-1730800000003",
+    "timestamp": "2026-11-05T08:20:00.000Z",
+    "status": "new",
+    "itemType": "hotel",
+    "itemId": "htl-vil-uyana",
+    "itemName": "Jetwing Vil Uyana",
+    "refCode": "HTL-001",
+    "travelDate": "2026-12-22",
+    "checkInDate": "2026-12-22",
+    "checkOutDate": "2026-12-25",
+    "travelersCount": 2,
+    "roomsCount": 1,
+    "hotelSelection": "Jetwing Vil Uyana (Paddy Dwelling with Plunge Pool)",
+    "customerName": "Anonymized Traveler",
+    "customerContact": "[Masked - No Consent]",
+    "notes": "Honeymoon stay request.",
+    "consentGiven": false
+  }
+]
